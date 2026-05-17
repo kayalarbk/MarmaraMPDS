@@ -1782,9 +1782,17 @@
     }
 
     @media (max-width: 768px) {
-      .faq-dropdown {
-        width: calc(100vw - 3rem);
-        right: -4rem;
+      .faq-dropdown,
+      .ann-dropdown {
+        position: fixed;
+        top: 64px;
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        z-index: 300;
+        border-radius: 12px;
       }
     }
 

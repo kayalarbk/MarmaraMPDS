@@ -509,6 +509,7 @@ function openAnn(id, fromCalendar) {
     <p class="ann-modal-body">${(a.content || '').replace(/\n/g, '<br>')}</p>
   `;
   document.getElementById('ann-nav-wrap')?.classList.remove('open');
+  history.pushState({ annOpen: true }, '');
   document.getElementById('ann-modal-overlay')?.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -721,9 +722,11 @@ window.closeMenu = closeMenu;
 function toggleAnnDropdown() {
   const wrap = document.getElementById('ann-nav-wrap');
   const faqWrap = document.getElementById('faq-nav-wrap');
-  if (faqWrap) faqWrap.classList.remove('open');
+  if (faqWrap) { faqWrap.classList.remove('open'); }
+  const willOpen = !wrap.classList.contains('open');
   wrap.classList.toggle('open');
-  if (wrap.classList.contains('open')) {
+  document.body.style.overflow = willOpen ? 'hidden' : '';
+  if (willOpen) {
     renderAnnList('hepsi');
     renderCalendar();
   }
@@ -747,6 +750,7 @@ function closeAnnModal(e) {
         !e.currentTarget.classList.contains('modal-close')) return;
   }
   document.getElementById('ann-modal-overlay').classList.remove('open');
+  history.replaceState(null, '', window.location.pathname + window.location.search);
   document.body.style.overflow = '';
   if (_annOpenedFromCalendar) {
     _annOpenedFromCalendar = false;
@@ -768,8 +772,10 @@ window.closeAnnModal = closeAnnModal;
 function toggleFaqDropdown() {
   const faqWrap = document.getElementById('faq-nav-wrap');
   const annWrap = document.getElementById('ann-nav-wrap');
-  if (annWrap) annWrap.classList.remove('open');
+  if (annWrap) { annWrap.classList.remove('open'); }
+  const willOpen = !faqWrap.classList.contains('open');
   faqWrap.classList.toggle('open');
+  document.body.style.overflow = willOpen ? 'hidden' : '';
 }
 window.toggleFaqDropdown = toggleFaqDropdown;
 
@@ -904,9 +910,26 @@ document.addEventListener('keydown', e => {
   document.body.style.overflow = '';
 });
 
-document.addEventListener('click', e => {
+function handleOutsideClose(e) {
   const annWrap = document.getElementById('ann-nav-wrap');
-  if (annWrap && !annWrap.contains(e.target)) annWrap.classList.remove('open');
   const faqWrap = document.getElementById('faq-nav-wrap');
-  if (faqWrap && !faqWrap.contains(e.target)) faqWrap.classList.remove('open');
+  if (annWrap && !annWrap.contains(e.target)) { annWrap.classList.remove('open'); }
+  if (faqWrap && !faqWrap.contains(e.target)) { faqWrap.classList.remove('open'); }
+  if ((!annWrap || !annWrap.classList.contains('open')) &&
+      (!faqWrap || !faqWrap.classList.contains('open'))) {
+    document.body.style.overflow = '';
+  }
+}
+document.addEventListener('click', handleOutsideClose);
+document.addEventListener('touchstart', handleOutsideClose, { passive: true });
+
+window.addEventListener('popstate', () => {
+  const overlay = document.getElementById('ann-modal-overlay');
+  if (overlay?.classList.contains('open')) {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    const annWrap = document.getElementById('ann-nav-wrap');
+    if (annWrap) annWrap.classList.add('open');
+    renderAnnList('hepsi');
+  }
 });
