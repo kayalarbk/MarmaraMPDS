@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/images/açık mpds.png">
   <link rel="stylesheet" href="css/style.css">
+  <script src="data/announcements-data.js"></script>
   <script>
     (function(){
       var t = localStorage.getItem('mpds-theme') || 'dark';
@@ -26,14 +27,149 @@
 <!-- ═══ NAV ═══ -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo" style="text-decoration:none">MARMARA<span>MPDS</span></a>
+    <div class="logo">MARMARA<span>MPDS</span></div>
     <ul class="nav-links">
       <li><a href="index.html#hero">Ana Sayfa</a></li>
       <li><a href="index.html#why">Neden MPDS</a></li>
       <li><a href="index.html#projects">Proje Havuzu</a></li>
-      <li><a href="index.html#team">Kurucu Ekip</a></li>
+      <li><a href="index.html#team">Ekip</a></li>
     </ul>
     <a href="index.html#apply" class="nav-cta">Aramıza Katıl</a>
+    <div class="ann-nav-wrap" id="ann-nav-wrap">
+      <button class="ann-nav-btn" id="ann-nav-btn" onclick="toggleAnnDropdown()" aria-label="Duyurular">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="ann-badge" id="ann-badge">4</span>
+      </button>
+
+      <div class="ann-dropdown" id="ann-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Duyurular & Takvim</span>
+          <button class="faq-dropdown-close" onclick="toggleAnnDropdown()">×</button>
+        </div>
+
+        <div class="ann-tab-row">
+          <button class="ann-tab active" data-tab="duyurular" onclick="switchAnnTab(this, 'duyurular')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Duyurular
+          </button>
+          <button class="ann-tab" data-tab="takvim" onclick="switchAnnTab(this, 'takvim')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Takvim
+          </button>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-duyurular">
+          <div class="ann-search-box">
+            <input class="ann-search-input" id="ann-search" type="search" placeholder="Duyuru ara…" autocomplete="off" oninput="filterAnnouncements(this.value)">
+          </div>
+          <div class="ann-filter-row">
+            <button class="ann-filter active" data-type="hepsi">Hepsi</button>
+            <button class="ann-filter" data-type="etkinlik">Etkinlik</button>
+            <button class="ann-filter" data-type="proje">Proje</button>
+            <button class="ann-filter" data-type="haber">Haber</button>
+          </div>
+          <div class="ann-list" id="ann-list"></div>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-takvim" style="display:none">
+          <div class="ann-calendar-wrap">
+            <div id="ann-calendar"></div>
+            <div class="ann-upcoming-wrap">
+              <div class="ann-upcoming-label">// Yaklaşan Etkinlikler</div>
+              <div id="ann-upcoming"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-nav-wrap" id="faq-nav-wrap">
+      <button class="faq-nav-btn" id="faq-nav-btn" onclick="toggleFaqDropdown()" aria-label="SSS">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </button>
+
+      <div class="faq-dropdown" id="faq-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Sık Sorulan Sorular</span>
+          <button class="faq-dropdown-close" onclick="toggleFaqDropdown()">×</button>
+        </div>
+        <div class="faq-dropdown-list">
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Herkes başvurabilir mi, sadece Marmara öğrencileri mi?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Şu an önceliğimiz Marmara Üniversitesi öğrencileri. Ancak farklı üniversitelerden öğrenciler de proje bazlı iş birliği için başvurabilir. Başvurunu gönder, birlikte değerlendirelim.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Başvurudan sonra süreç nasıl işliyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Başvurunu aldıktan sonra en geç 1 hafta içinde e-posta ile dönüş yapıyoruz. Kısa bir tanışma görüşmesinin ardından seni ilgili proje ekibiyle buluşturuyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Haftada ne kadar zaman ayırmam gerekiyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Minimum 3-4 saat haftalık yeterli. Proje yoğunluğuna ve rolüne göre bu süre değişebilir. Ders dönemlerinde esneklik sağlıyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Proje fikrim olmadan da katılabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Kesinlikle. Proje Havuzu'ndaki mevcut projelere katılmak için sadece ilgili role başvurman yeterli. Fikir sahibi olmak zorunlu değil.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projemi eklemek için teknik bilgi gerekiyor mu?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır. Proje fikrin ve neye ihtiyacın olduğunu bilmen yeterli. Teknik detayları birlikte netleştirebiliriz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projeme hoca desteği nasıl sağlanıyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Periyodik "Proje Check-up" etkinliklerinde danışman hocalarımız ekiplere geri bildirim veriyor. Akademik danışmanlık için hoca-öğrenci iletişimini biz koordine ediyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>MPDS'e katılmanın maddi bir maliyeti var mı?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır, tamamen ücretsiz. MPDS bir öğrenci kulübüdür, herhangi bir aidat veya katılım ücreti yoktur.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>TEKNOFEST veya TÜBİTAK için destek alabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Evet. Başvuru süreçleri, dokümantasyon hazırlığı ve danışman hocaya erişim konularında destek sağlıyoruz.</p></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Tema değiştir">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
         <circle cx="12" cy="12" r="5"/>
@@ -51,7 +187,7 @@
     <a href="index.html#hero" onclick="closeMenu()">Ana Sayfa</a>
     <a href="index.html#why" onclick="closeMenu()">Neden MPDS</a>
     <a href="index.html#projects" onclick="closeMenu()">Proje Havuzu</a>
-    <a href="index.html#team" onclick="closeMenu()">Kurucu Ekip</a>
+    <a href="index.html#team" onclick="closeMenu()">Ekip</a>
   </div>
 </nav>
 
@@ -81,6 +217,18 @@
 <footer>
   <p>© 2026 <strong>MARMARA MPDS</strong>. Tüm hakları saklıdır. &nbsp;·&nbsp; <a href="mailto:marmarampds@gmail.com">marmarampds@gmail.com</a></p>
 </footer>
+
+<!-- ═══ DUYURU DETAY MODAL ═══ -->
+<div class="modal-overlay" id="ann-modal-overlay" onclick="closeAnnModal(event)">
+  <div class="modal" id="ann-modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAnnModal()" aria-label="Kapat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div id="ann-modal-content"></div>
+  </div>
+</div>
 
 <!-- ═══ MEMBER MODAL ═══ -->
 <div class="modal-overlay" id="overlay" onclick="closeMemberModal(event)">
@@ -232,11 +380,183 @@ function closeMenu() {
 }
 window.closeMenu = closeMenu;
 
+// ── Ann & FAQ nav ──
+let _annData = [];
+let _annFromCal = false;
+let _calDate = new Date();
+
+function _loadAnnData() {
+  if (!_annData.length && typeof ANNOUNCEMENTS !== 'undefined') _annData = ANNOUNCEMENTS;
+}
+
+function toggleAnnDropdown() {
+  const wrap = document.getElementById('ann-nav-wrap');
+  const faqWrap = document.getElementById('faq-nav-wrap');
+  if (faqWrap) faqWrap.classList.remove('open');
+  wrap.classList.toggle('open');
+  if (wrap.classList.contains('open')) { _loadAnnData(); _renderAnnList('hepsi'); _renderCalendar(); }
+}
+window.toggleAnnDropdown = toggleAnnDropdown;
+
+function switchAnnTab(btn, tab) {
+  document.querySelectorAll('.ann-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.ann-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('ann-pane-' + tab).style.display = '';
+  if (tab === 'takvim') _renderCalendar();
+}
+window.switchAnnTab = switchAnnTab;
+
+function filterAnnouncements(q) {
+  const lower = q.toLowerCase().trim();
+  document.querySelectorAll('#ann-list .ann-item').forEach(item => {
+    item.style.display = (!lower || item.textContent.toLowerCase().includes(lower)) ? '' : 'none';
+  });
+}
+window.filterAnnouncements = filterAnnouncements;
+
+function _renderAnnList(filter) {
+  _loadAnnData();
+  const list = document.getElementById('ann-list');
+  if (!list) return;
+  const filtered = filter === 'hepsi' ? _annData : _annData.filter(a => a.type === filter);
+  if (!filtered.length) { list.innerHTML = '<p style="color:var(--muted);padding:1rem 0">Bu kategoride duyuru yok.</p>'; return; }
+  list.innerHTML = filtered.map(a => `
+    <div class="ann-item" onclick="openAnn('${a.id}')">
+      <div class="ann-meta">
+        <span class="ann-type ann-type-${a.type || ''}">${a.typeLabel || a.type || ''}</span>
+        <span class="ann-date">${a.date || ''}</span>
+      </div>
+      <div class="ann-title">${a.title}</div>
+      <p class="ann-summary">${a.summary || ''}</p>
+    </div>
+  `).join('');
+}
+
+function openAnn(id, fromCal) {
+  _loadAnnData();
+  const a = _annData.find(x => x.id === id);
+  if (!a) return;
+  _annFromCal = !!fromCal;
+  document.getElementById('ann-modal-content').innerHTML = `
+    <div class="ann-modal-head">
+      <span class="ann-type ann-type-${a.type || ''}">${a.typeLabel || a.type || ''}</span>
+      <span class="ann-date">${_fmtDate(a.date || '')}</span>
+    </div>
+    <h2 class="ann-modal-title">${a.title}</h2>
+    <p class="ann-modal-body">${(a.content || '').replace(/\n/g, '<br>')}</p>
+  `;
+  document.getElementById('ann-nav-wrap')?.classList.remove('open');
+  document.getElementById('ann-modal-overlay')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openAnn = openAnn;
+
+function closeAnnModal(e) {
+  if (e) {
+    e.preventDefault(); e.stopPropagation();
+    if (e.target !== document.getElementById('ann-modal-overlay') &&
+        !e.currentTarget.classList.contains('modal-close')) return;
+  }
+  document.getElementById('ann-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  if (_annFromCal) {
+    _annFromCal = false;
+    setTimeout(() => {
+      const w = document.getElementById('ann-nav-wrap');
+      if (w) { w.classList.add('open'); const t = document.querySelector('.ann-tab[data-tab="takvim"]'); if (t) switchAnnTab(t, 'takvim'); }
+    }, 0);
+  }
+}
+window.closeAnnModal = closeAnnModal;
+
+function _fmtDate(s) {
+  if (!s) return '';
+  return new Date(s).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function _renderCalendar() {
+  _loadAnnData();
+  const cal = document.getElementById('ann-calendar');
+  if (!cal) return;
+  const y = _calDate.getFullYear(), m = _calDate.getMonth();
+  const mNames = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const firstDay = new Date(y, m, 1).getDay();
+  const adj = firstDay === 0 ? 6 : firstDay - 1;
+  const days = new Date(y, m + 1, 0).getDate();
+  const today = new Date();
+  const evDays = {};
+  _annData.forEach(a => {
+    if (!a.date) return;
+    const d = new Date(a.date);
+    if (d.getFullYear() === y && d.getMonth() === m) { const day = d.getDate(); if (!evDays[day]) evDays[day] = []; evDays[day].push(a); }
+  });
+  let html = `<div class="cal-header"><button class="cal-nav" type="button" onclick="changeMonth(event,-1)">‹</button><span class="cal-title">${mNames[m]} ${y}</span><button class="cal-nav" type="button" onclick="changeMonth(event,1)">›</button></div><div class="cal-grid"><div class="cal-day-label">Pt</div><div class="cal-day-label">Sa</div><div class="cal-day-label">Ça</div><div class="cal-day-label">Pe</div><div class="cal-day-label">Cu</div><div class="cal-day-label">Ct</div><div class="cal-day-label">Pz</div>`;
+  for (let i = 0; i < adj; i++) html += `<div class="cal-cell empty"></div>`;
+  for (let d = 1; d <= days; d++) {
+    const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+    const evs = evDays[d] || [];
+    const ids = evs.map(e => e.id).join(',');
+    html += `<div class="cal-cell${isToday ? ' today' : ''}${evs.length ? ' has-event' : ''}" ${evs.length ? `onclick="openCalEvent(event,'${ids}')"` : ''}>${d}${evs.length ? '<span class="cal-dot"></span>' : ''}</div>`;
+  }
+  html += `</div>`;
+  cal.innerHTML = html;
+  const upList = document.getElementById('ann-upcoming');
+  if (upList) {
+    const now = new Date();
+    const upcoming = _annData.filter(a => a.date && new Date(a.date) >= now).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+    const mo = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+    upList.innerHTML = upcoming.length ? upcoming.map(a => `<div class="ann-upcoming-item" onclick="openAnn('${a.id}')"><div class="ann-upcoming-date"><span class="ann-upcoming-day">${new Date(a.date).getDate()}</span><span class="ann-upcoming-month">${mo[new Date(a.date).getMonth()]}</span></div><div class="ann-upcoming-info"><div class="ann-upcoming-title">${a.title}</div><span class="ann-type ann-type-${a.type}">${a.typeLabel || a.type}</span></div></div>`).join('') : '<div class="ann-empty">Yaklaşan etkinlik yok</div>';
+  }
+}
+
+function changeMonth(e, dir) { e.stopPropagation(); _calDate.setMonth(_calDate.getMonth() + dir); _renderCalendar(); }
+window.changeMonth = changeMonth;
+
+function openCalEvent(e, ids) { e.stopPropagation(); openAnn(ids.split(',')[0], true); }
+window.openCalEvent = openCalEvent;
+
+function toggleFaqDropdown() {
+  const faqWrap = document.getElementById('faq-nav-wrap');
+  const annWrap = document.getElementById('ann-nav-wrap');
+  if (annWrap) annWrap.classList.remove('open');
+  faqWrap.classList.toggle('open');
+}
+window.toggleFaqDropdown = toggleFaqDropdown;
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-dropdown .faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+window.toggleFaq = toggleFaq;
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     document.getElementById('overlay')?.classList.remove('open');
+    document.getElementById('ann-modal-overlay')?.classList.remove('open');
+    document.getElementById('ann-nav-wrap')?.classList.remove('open');
+    document.getElementById('faq-nav-wrap')?.classList.remove('open');
     document.body.style.overflow = '';
   }
+});
+
+document.addEventListener('click', e => {
+  const annWrap = document.getElementById('ann-nav-wrap');
+  if (annWrap && !annWrap.contains(e.target)) annWrap.classList.remove('open');
+  const faqWrap = document.getElementById('faq-nav-wrap');
+  if (faqWrap && !faqWrap.contains(e.target)) faqWrap.classList.remove('open');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#ann-pane-duyurular .ann-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ann-pane-duyurular .ann-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _renderAnnList(btn.dataset.type);
+    });
+  });
 });
 
 document.getElementById('modal-box').addEventListener('click', e => e.stopPropagation());

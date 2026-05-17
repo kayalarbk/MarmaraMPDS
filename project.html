@@ -18,6 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
   <link rel="icon" type="image/png" href="assets/images/açık mpds.png">
   <link rel="stylesheet" href="css/style.css">
+  <script src="data/announcements-data.js"></script>
   <script>
     (function(){
       var t = localStorage.getItem('mpds-theme') || 'dark';
@@ -30,7 +31,7 @@
 <!-- ═══ NAV ═══ -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo" style="text-decoration:none">MARMARA<span>MPDS</span></a>
+    <div class="logo">MARMARA<span>MPDS</span></div>
     <ul class="nav-links">
       <li><a href="index.html#hero">Ana Sayfa</a></li>
       <li><a href="index.html#why">Neden MPDS</a></li>
@@ -38,6 +39,141 @@
       <li><a href="index.html#team">Ekip</a></li>
     </ul>
     <a href="index.html#apply" class="nav-cta">Aramıza Katıl</a>
+    <div class="ann-nav-wrap" id="ann-nav-wrap">
+      <button class="ann-nav-btn" id="ann-nav-btn" onclick="toggleAnnDropdown()" aria-label="Duyurular">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="ann-badge" id="ann-badge">4</span>
+      </button>
+
+      <div class="ann-dropdown" id="ann-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Duyurular & Takvim</span>
+          <button class="faq-dropdown-close" onclick="toggleAnnDropdown()">×</button>
+        </div>
+
+        <div class="ann-tab-row">
+          <button class="ann-tab active" data-tab="duyurular" onclick="switchAnnTab(this, 'duyurular')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Duyurular
+          </button>
+          <button class="ann-tab" data-tab="takvim" onclick="switchAnnTab(this, 'takvim')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Takvim
+          </button>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-duyurular">
+          <div class="ann-search-box">
+            <input class="ann-search-input" id="ann-search" type="search" placeholder="Duyuru ara…" autocomplete="off" oninput="filterAnnouncements(this.value)">
+          </div>
+          <div class="ann-filter-row">
+            <button class="ann-filter active" data-type="hepsi">Hepsi</button>
+            <button class="ann-filter" data-type="etkinlik">Etkinlik</button>
+            <button class="ann-filter" data-type="proje">Proje</button>
+            <button class="ann-filter" data-type="haber">Haber</button>
+          </div>
+          <div class="ann-list" id="ann-list"></div>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-takvim" style="display:none">
+          <div class="ann-calendar-wrap">
+            <div id="ann-calendar"></div>
+            <div class="ann-upcoming-wrap">
+              <div class="ann-upcoming-label">// Yaklaşan Etkinlikler</div>
+              <div id="ann-upcoming"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-nav-wrap" id="faq-nav-wrap">
+      <button class="faq-nav-btn" id="faq-nav-btn" onclick="toggleFaqDropdown()" aria-label="SSS">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </button>
+
+      <div class="faq-dropdown" id="faq-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Sık Sorulan Sorular</span>
+          <button class="faq-dropdown-close" onclick="toggleFaqDropdown()">×</button>
+        </div>
+        <div class="faq-dropdown-list">
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Herkes başvurabilir mi, sadece Marmara öğrencileri mi?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Şu an önceliğimiz Marmara Üniversitesi öğrencileri. Ancak farklı üniversitelerden öğrenciler de proje bazlı iş birliği için başvurabilir. Başvurunu gönder, birlikte değerlendirelim.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Başvurudan sonra süreç nasıl işliyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Başvurunu aldıktan sonra en geç 1 hafta içinde e-posta ile dönüş yapıyoruz. Kısa bir tanışma görüşmesinin ardından seni ilgili proje ekibiyle buluşturuyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Haftada ne kadar zaman ayırmam gerekiyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Minimum 3-4 saat haftalık yeterli. Proje yoğunluğuna ve rolüne göre bu süre değişebilir. Ders dönemlerinde esneklik sağlıyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Proje fikrim olmadan da katılabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Kesinlikle. Proje Havuzu'ndaki mevcut projelere katılmak için sadece ilgili role başvurman yeterli. Fikir sahibi olmak zorunlu değil.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projemi eklemek için teknik bilgi gerekiyor mu?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır. Proje fikrin ve neye ihtiyacın olduğunu bilmen yeterli. Teknik detayları birlikte netleştirebiliriz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projeme hoca desteği nasıl sağlanıyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Periyodik "Proje Check-up" etkinliklerinde danışman hocalarımız ekiplere geri bildirim veriyor. Akademik danışmanlık için hoca-öğrenci iletişimini biz koordine ediyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>MPDS'e katılmanın maddi bir maliyeti var mı?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır, tamamen ücretsiz. MPDS bir öğrenci kulübüdür, herhangi bir aidat veya katılım ücreti yoktur.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>TEKNOFEST veya TÜBİTAK için destek alabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Evet. Başvuru süreçleri, dokümantasyon hazırlığı ve danışman hocaya erişim konularında destek sağlıyoruz.</p></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Tema değiştir">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
         <circle cx="12" cy="12" r="5"/>
@@ -72,6 +208,18 @@
 <footer>
   <p>© 2026 <strong>MARMARA MPDS</strong>. Tüm hakları saklıdır. &nbsp;·&nbsp; <a href="mailto:marmarampds@gmail.com">marmarampds@gmail.com</a></p>
 </footer>
+
+<!-- ═══ DUYURU DETAY MODAL ═══ -->
+<div class="modal-overlay" id="ann-modal-overlay" onclick="closeAnnModal(event)">
+  <div class="modal" id="ann-modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAnnModal()" aria-label="Kapat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div id="ann-modal-content"></div>
+  </div>
+</div>
 
 <script src="data/projects-data.js"></script>
 <script type="module" src="js/project-detail.js"></script>

@@ -1997,8 +1997,23 @@
 
     @media (max-width: 768px) {
       .ann-dropdown {
-        width: calc(100vw - 3rem);
-        right: -4rem;
+        position: fixed;
+        top: 68px;
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        border-radius: 12px;
+      }
+      .ann-list {
+        max-height: 45vh;
+      }
+      .ann-calendar-wrap {
+        padding: .75rem 1rem;
+      }
+      .ann-upcoming-item {
+        padding: .5rem .5rem;
       }
     }
 
