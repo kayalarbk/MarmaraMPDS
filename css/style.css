@@ -1,4 +1,5 @@
 
+    /* Bu dosyanın --cyan değeri admin.html'den kasıtlı farklıdır */
     :root {
       --cyan: #148fad;
       --cyan-dim: #007495;
@@ -25,11 +26,8 @@
       --muted: #607080;
     }
 
-    /* smooth transition for theme switch */
-    body, nav, .modal, .form-card, .why-card, .member-card, .project-card,
-    .glass-card, .detail-block, .detail-sidebar-block, .toast, footer {
-      transition: background-color 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
-    }
+    * { transition: background-color 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s; }
+    .skeleton-card, .skeleton-line { transition: none; }
 
     /* NAV */
     [data-theme="light"] nav {
@@ -1612,38 +1610,12 @@
       font-style: italic;
     }
 
+    .page-section { padding-top: 7rem; }
+    .project-cta-cyan { color: var(--cyan); }
+
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
-    @media (max-width: 900px) {
-      .project-card.featured,
-      .project-card.medium,
-      .project-card.small { grid-column: span 12; }
-      .why-grid { grid-template-columns: repeat(2, 1fr); }
-      .detail-grid { grid-template-columns: 1fr; }
-      .detail-sidebar { position: static; }
-    }
-
-    @media (max-width: 768px) {
-      .nav-links, .nav-cta { display: none; }
-      .hamburger { display: flex; }
-      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .hero-right-visual { display: none; }
-      .form-row { grid-template-columns: 1fr; }
-      .team-grid { grid-template-columns: 1fr; }
-      .member-card-featured { transform: none; order: -1; }
-      .why-grid { grid-template-columns: 1fr; }
-      .pool-filters { gap: .4rem; }
-      .pool-filter { font-size: .72rem; padding: .35rem .8rem; }
-      .hero-right-visual { min-height: 400px; }
-      .glass-card { min-width: auto; width: 100%; max-width: 380px; }
-      .glass-card code { font-size: .9rem; }
-    }
-
-    @media (max-width: 600px) {
-      .pool-filters { flex-wrap: wrap; }
-      .pool-filter { font-size: .7rem; padding: .3rem .7rem; }
-    }
 
     /* ══════════════════════════════════════
        FAQ NAV DROPDOWN
@@ -1781,20 +1753,6 @@
       padding-top: .75rem;
     }
 
-    @media (max-width: 768px) {
-      .faq-dropdown,
-      .ann-dropdown {
-        position: fixed;
-        top: 64px;
-        left: 1rem;
-        right: 1rem;
-        width: auto;
-        max-height: calc(100vh - 80px);
-        overflow-y: auto;
-        z-index: 300;
-        border-radius: 12px;
-      }
-    }
 
     /* ══════════════════════════════════════
        ANNOUNCEMENTS DROPDOWN
@@ -2003,27 +1961,6 @@
       line-height: 1.75;
     }
 
-    @media (max-width: 768px) {
-      .ann-dropdown {
-        position: fixed;
-        top: 68px;
-        left: 1rem;
-        right: 1rem;
-        width: auto;
-        max-height: calc(100vh - 80px);
-        overflow-y: auto;
-        border-radius: 12px;
-      }
-      .ann-list {
-        max-height: 45vh;
-      }
-      .ann-calendar-wrap {
-        padding: .75rem 1rem;
-      }
-      .ann-upcoming-item {
-        padding: .5rem .5rem;
-      }
-    }
 
     /* ── Ann tabs & filter update ── */
     .ann-filter-row {
@@ -2392,9 +2329,6 @@
       border-color: rgba(0,229,255,.4);
       box-shadow: 0 0 0 3px rgba(0,229,255,.08);
     }
-    @media (max-width: 600px) {
-      .search-input { font-size: .85rem; padding: .6rem 1rem .6rem 2.5rem; }
-    }
 
     .ann-search-box {
       padding: .5rem .9rem;
@@ -2413,3 +2347,52 @@
     }
     .ann-search-input::placeholder { color: var(--muted); }
     .ann-search-input:focus { border-color: rgba(0,229,255,.35); }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE (consolidated)
+    ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .project-card.featured,
+      .project-card.medium,
+      .project-card.small { grid-column: span 12; }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .detail-grid { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-right-visual { display: none; min-height: 400px; }
+      .form-row { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .member-card-featured { transform: none; order: -1; }
+      .why-grid { grid-template-columns: 1fr; }
+      .pool-filters { gap: .4rem; }
+      .pool-filter { font-size: .72rem; padding: .35rem .8rem; }
+      .glass-card { min-width: auto; width: 100%; max-width: 380px; }
+      .glass-card code { font-size: .9rem; }
+      .faq-dropdown,
+      .ann-dropdown {
+        position: fixed;
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        z-index: 300;
+        border-radius: 12px;
+      }
+      .faq-dropdown { top: 64px; }
+      .ann-dropdown { top: 68px; }
+      .ann-list { max-height: 45vh; }
+      .ann-calendar-wrap { padding: .75rem 1rem; }
+      .ann-upcoming-item { padding: .5rem .5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .pool-filters { flex-wrap: wrap; }
+      .pool-filter { font-size: .7rem; padding: .3rem .7rem; }
+      .search-input { font-size: .85rem; padding: .6rem 1rem .6rem 2.5rem; }
+    }
