@@ -154,8 +154,8 @@ async function loadProjectsFromFirestore() {
     PROJECTS_DATA = {};
     snap.forEach(d => { PROJECTS_DATA[d.id] = { id: d.id, ...d.data() }; });
   } catch (err) {
-    console.warn('[MPDS] projects yüklenemedi:', err);
-    if (typeof PROJECTS !== 'undefined') PROJECTS_DATA = PROJECTS;
+    console.warn('[MPDS] Projeler yüklenemedi:', err);
+    PROJECTS_DATA = {};
   }
 }
 
@@ -165,8 +165,8 @@ async function loadAnnouncementsFromFirestore() {
     const snap = await getDocs(q);
     ANNOUNCEMENTS_DATA = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   } catch (err) {
-    console.warn('[MPDS] announcements yüklenemedi:', err);
-    if (typeof ANNOUNCEMENTS !== 'undefined') ANNOUNCEMENTS_DATA = ANNOUNCEMENTS;
+    console.warn('[MPDS] Duyurular yüklenemedi:', err);
+    ANNOUNCEMENTS_DATA = [];
   }
 }
 
@@ -177,7 +177,8 @@ async function loadMembersFromFirestore() {
     MEMBERS_DATA = {};
     snap.forEach(d => { MEMBERS_DATA[d.id] = { id: d.id, ...d.data() }; });
   } catch (err) {
-    console.warn('[MPDS] members yüklenemedi:', err);
+    console.warn('[MPDS] Üyeler yüklenemedi:', err);
+    MEMBERS_DATA = {};
   }
 }
 
