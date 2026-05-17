@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MARMARA MPDS</title>
+  <meta name="description" content="MARMARA MPDS — Marmara Üniversitesi bünyesinde proje fikri olan öğrencilerle ekip arayan geliştiricileri buluşturan inovasyon ağı.">
+  <meta property="og:title" content="MARMARA MPDS">
+  <meta property="og:description" content="Fikirleri Projeye Dönüştürüyoruz. Ekip kur, mentor bul, projeyi hayata geçir.">
+  <meta property="og:image" content="https://kayalarbk.github.io/MarmaraMPDS/favicon.png">
+  <meta property="og:url" content="https://kayalarbk.github.io/MarmaraMPDS/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MARMARA MPDS">
+  <meta name="twitter:description" content="Fikirleri Projeye Dönüştürüyoruz.">
+  <meta name="twitter:image" content="https://kayalarbk.github.io/MarmaraMPDS/favicon.png">
+  <meta property="og:site_name" content="MARMARA MPDS">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/images/açık mpds.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){
+      var t = localStorage.getItem('mpds-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+    
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">MARMARA<span>MPDS</span></div>
+    <ul class="nav-links">
+      <li><a href="#hero">Ana Sayfa</a></li>
+      <li><a href="#why">Neden MPDS</a></li>
+      <li><a href="#projects">Proje Havuzu</a></li>
+      <li><a href="#team">Ekip</a></li>
+    </ul>
+    <a href="#apply" class="nav-cta">Aramıza Katıl</a>
+    <div class="ann-nav-wrap" id="ann-nav-wrap">
+      <button class="ann-nav-btn" id="ann-nav-btn" onclick="toggleAnnDropdown()" aria-label="Duyurular">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="ann-badge" id="ann-badge">4</span>
+      </button>
+
+      <div class="ann-dropdown" id="ann-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Duyurular & Takvim</span>
+          <button class="faq-dropdown-close" onclick="toggleAnnDropdown()">×</button>
+        </div>
+
+        <div class="ann-tab-row">
+          <button class="ann-tab active" data-tab="duyurular" onclick="switchAnnTab(this, 'duyurular')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Duyurular
+          </button>
+          <button class="ann-tab" data-tab="takvim" onclick="switchAnnTab(this, 'takvim')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Takvim
+          </button>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-duyurular">
+          <div class="ann-search-box">
+            <input class="ann-search-input" id="ann-search" type="search" placeholder="Duyuru ara…" autocomplete="off" oninput="filterAnnouncements(this.value)">
+          </div>
+          <div class="ann-filter-row">
+            <button class="ann-filter active" data-type="hepsi">Hepsi</button>
+            <button class="ann-filter" data-type="etkinlik">Etkinlik</button>
+            <button class="ann-filter" data-type="proje">Proje</button>
+            <button class="ann-filter" data-type="haber">Haber</button>
+          </div>
+          <div class="ann-list" id="ann-list"></div>
+        </div>
+
+        <div class="ann-pane" id="ann-pane-takvim" style="display:none">
+          <div class="ann-calendar-wrap">
+            <div id="ann-calendar"></div>
+            <div class="ann-upcoming-wrap">
+              <div class="ann-upcoming-label">// Yaklaşan Etkinlikler</div>
+              <div id="ann-upcoming"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-nav-wrap" id="faq-nav-wrap">
+      <button class="faq-nav-btn" id="faq-nav-btn" onclick="toggleFaqDropdown()" aria-label="SSS">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </button>
+
+      <div class="faq-dropdown" id="faq-dropdown">
+        <div class="faq-dropdown-header">
+          <span class="faq-dropdown-title">Sık Sorulan Sorular</span>
+          <button class="faq-dropdown-close" onclick="toggleFaqDropdown()">×</button>
+        </div>
+        <div class="faq-dropdown-list">
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Herkes başvurabilir mi, sadece Marmara öğrencileri mi?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Şu an önceliğimiz Marmara Üniversitesi öğrencileri. Ancak farklı üniversitelerden öğrenciler de proje bazlı iş birliği için başvurabilir. Başvurunu gönder, birlikte değerlendirelim.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Başvurudan sonra süreç nasıl işliyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Başvurunu aldıktan sonra en geç 1 hafta içinde e-posta ile dönüş yapıyoruz. Kısa bir tanışma görüşmesinin ardından seni ilgili proje ekibiyle buluşturuyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Haftada ne kadar zaman ayırmam gerekiyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Minimum 3-4 saat haftalık yeterli. Proje yoğunluğuna ve rolüne göre bu süre değişebilir. Ders dönemlerinde esneklik sağlıyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Proje fikrim olmadan da katılabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Kesinlikle. Proje Havuzu'ndaki mevcut projelere katılmak için sadece ilgili role başvurman yeterli. Fikir sahibi olmak zorunlu değil.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projemi eklemek için teknik bilgi gerekiyor mu?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır. Proje fikrin ve neye ihtiyacın olduğunu bilmen yeterli. Teknik detayları birlikte netleştirebiliriz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>Projeme hoca desteği nasıl sağlanıyor?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Periyodik "Proje Check-up" etkinliklerinde danışman hocalarımız ekiplere geri bildirim veriyor. Akademik danışmanlık için hoca-öğrenci iletişimini biz koordine ediyoruz.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>MPDS'e katılmanın maddi bir maliyeti var mı?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Hayır, tamamen ücretsiz. MPDS bir öğrenci kulübüdür, herhangi bir aidat veya katılım ücreti yoktur.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              <span>TEKNOFEST veya TÜBİTAK için destek alabilir miyim?</span>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a"><p>Evet. Başvuru süreçleri, dokümantasyon hazırlığı ve danışman hocaya erişim konularında destek sağlıyoruz.</p></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Tema değiştir">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menüyü aç" role="button">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero" onclick="closeMenu()">Ana Sayfa</a>
+    <a href="#why" onclick="closeMenu()">Neden MPDS</a>
+    <a href="#projects" onclick="closeMenu()">Proje Havuzu</a>
+    <a href="#team" onclick="closeMenu()">Ekip</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero mesh-bg" id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> Kuruluş Aşamasında · Üye Alımı Açık</div>
+      <h1>Fikirleri<br/><a href="#projects" class="hero-project-link">Projeye</a><br/>Dönüştürüyoruz</h1>
+      <p>MARMARA MPDS, üniversite içi inovasyon ağıdır. Proje fikri olan öğrencilerle ekip arayan geliştiricileri buluşturur; akademik mentorluk ve teknik destekle projelerin atıl kalmasını engeller.</p>
+      
+      <div class="hero-btns">
+        <a href="#why" class="btn-primary">Neden MPDS?</a>
+        <a href="#apply" class="btn-ghost">Aramıza Katıl →</a>
+      </div>
+      
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num" id="member-count">5</div>
+          <div class="stat-label">Misyon</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Disiplin Alanı</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Aktif Projeler</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Proje Potansiyeli</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right-visual">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="card-body">
+          <pre><code><span class="comment">// MPDS: Fikirden Prototipe</span>
+<span class="keyword">while</span> (fikir.varsa) {
+  <span class="function">ekip_kur</span>();
+  <span class="function">mentor_bul</span>();
+  <span class="function">projeyi_hayata_gecir</span>();
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="glow-line"></div>
+
+<div class="glow-line"></div>
+
+<!-- ═══ NEDEN MPDS ═══ -->
+<section class="section" id="why">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">// Misyonumuz</span>
+      <h2 class="section-title">Neden <span style="color:var(--cyan)">MPDS</span>?</h2>
+      <p class="section-sub">Pek çok öğrencinin harika fikirleri var — ama ekip bulamadığı veya teknik bir engelde takıldığı için projeler çöpe gidiyor. MPDS bu kaybı önlemek için var.</p>
+    </div>
+
+    <div class="why-grid">
+
+      <div class="why-card reveal">
+        <div class="why-num">01</div>
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <circle cx="12" cy="12" r="3"/>
+            <circle cx="5" cy="5" r="2"/>
+            <circle cx="19" cy="5" r="2"/>
+            <circle cx="5" cy="19" r="2"/>
+            <circle cx="19" cy="19" r="2"/>
+            <line x1="6.5" y1="6.5" x2="9.5" y2="9.5"/>
+            <line x1="17.5" y1="6.5" x2="14.5" y2="9.5"/>
+            <line x1="6.5" y1="17.5" x2="9.5" y2="14.5"/>
+            <line x1="17.5" y1="17.5" x2="14.5" y2="14.5"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Ekosistem Oluşturma</h3>
+        <p class="why-desc">Proje fikirleri olan yetenekli öğrencilerle, bu projelerde rol almak isteyen disiplinler arası (Yazılım, Donanım, Tasarım) ekip arkadaşlarını bir araya getiren bir köprü kuruyoruz.</p>
+        <div class="why-tags">
+          <span class="why-tag">Matchmaking</span>
+          <span class="why-tag">Disiplinler Arası</span>
+        </div>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-num">02</div>
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M12 20.5l-8-4V8l8 4 8-4v8.5l-8 4z"/>
+            <polyline points="4 8 12 4 20 8"/>
+            <line x1="12" y1="12" x2="12" y2="20.5"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Teknik Mentorluk</h3>
+        <p class="why-desc">Proje aşamasında takılan ekiplere teknik destek sağlıyor, kulüp içi tecrübe aktarımıyla projelerin yarıda kalmasını önlüyoruz. Kıdemli üyelerimiz yeni ekiplere yol gösterir.</p>
+        <div class="why-tags">
+          <span class="why-tag">Code Review</span>
+          <span class="why-tag">Tecrübe Aktarımı</span>
+        </div>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-num">03</div>
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Akademik Köprü</h3>
+        <p class="why-desc">Öğrencilerin projelerini akademik bir zemine oturtmak için danışman hocalarla iletişim süreçlerini yönetiyor, projelerin bilimsel derinliğini artırıyoruz.</p>
+        <div class="why-tags">
+          <span class="why-tag">Hoca-Öğrenci</span>
+          <span class="why-tag">Bilimsel Derinlik</span>
+        </div>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-num">04</div>
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Sinerji Etkinlikleri</h3>
+        <p class="why-desc">"Proje Günleri" ve "Sosyal Demo Günleri" gibi etkinliklerle ekiplerin motivasyonunu yüksek tutar, ilerleyişlerini hızlandırırız. Sadece kod değil, topluluk da kuruyoruz.</p>
+        <div class="why-tags">
+          <span class="why-tag">Demo Day</span>
+          <span class="why-tag">Topluluk</span>
+        </div>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-num">05</div>
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M9 11l3 3 8-8"/>
+            <path d="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Hoca Panelleri & Kritikler</h3>
+        <p class="why-desc">Belirli periyotlarla düzenlenen "Proje Check-up" etkinlikleri sayesinde, hocalarımızın geri bildirimleriyle projelerdeki teknik açıkları erken safhada kapatıyoruz.</p>
+        <div class="why-tags">
+          <span class="why-tag">Proje Check-up</span>
+          <span class="why-tag">Erken Geri Bildirim</span>
+        </div>
+      </div>
+
+      <div class="why-card why-highlight reveal">
+        <div class="why-num">→</div>
+        <div class="why-icon highlight-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <h3 class="why-title">Marmara'ya Katkımız</h3>
+        <p class="why-desc">Yüksek TEKNOFEST ve TÜBİTAK katılım oranı, üniversite-sanayi iş birliği için hazır prototipler ve nitelikli mezun profili. Hocalarımıza "olgunlaşmış" projeler sunuyoruz.</p>
+        <div class="why-tags">
+          <span class="why-tag">TEKNOFEST</span>
+          <span class="why-tag">TÜBİTAK</span>
+          <span class="why-tag">Sanayi İş Birliği</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══ PROJE HAVUZU ═══ -->
+<section class="section" id="projects">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">// Proje Havuzu</span>
+      <h2 class="section-title">Fikirler Burada,<br/>Sıra <span style="color:var(--cyan)">Sende</span></h2>
+      <p class="section-sub">Ekip arayan, mentor arayan veya birlikte geliştirilecek fikirler. MPDS Proje Havuzu, atıl kalan potansiyellerin buluşma noktasıdır. Sen de fikrini paylaş ya da bir projeye katıl.</p>
+    </div>
+
+    <!-- Filtre Şeridi -->
+    <div class="pool-filters reveal">
+      <div class="pool-filter active"><span class="pf-dot"></span> Tüm Projeler</div>
+      <div class="pool-filter"><span class="pf-dot ekip"></span> Ekip Arıyor</div>
+      <div class="pool-filter"><span class="pf-dot mentor"></span> Mentor Arıyor</div>
+      <div class="pool-filter"><span class="pf-dot fikir"></span> Fikir Aşamasında</div>
+    </div>
+
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="project-search" type="search" placeholder="Proje ara…" autocomplete="off" oninput="filterProjects(this.value)">
+    </div>
+    <div class="projects-grid" id="projects-grid"></div>
+
+   
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══ EKİP ═══ -->
+<section class="section" id="team">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">// Ekip</span>
+      <h2 class="section-title">MPDS'i <span style="color:var(--cyan)">Hayata Geçiren</span><br/>İsimler</h2>
+      <p class="section-sub">Kulübümüzü kuran ve yöneten çekirdek ekip. Tüm üyelerimizi görmek için Üyeler sayfasını ziyaret edebilirsin.</p>
+    </div>
+
+    <div class="team-switch-row">
+      <button class="team-switch active">Yönetim</button>
+      <a href="uyeler.html" class="team-switch">Üyeler →</a>
+    </div>
+
+    <div class="team-grid">
+
+      <div class="member-card reveal" onclick="openModal('m2')">
+        <div class="avatar-wrap">
+          <img src="assets/team/furkan-yilmaz.jpg" alt="Furkan Yılmaz" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="display:none">FY</div>
+        </div>
+        <div class="member-name">Furkan YILMAZ</div>
+        <div class="member-role">Başkan Yardımcısı</div>
+        <p class="member-bio">Başkan yardımcısı olarak proje süreçlerini ve ekip koordinasyonunu yönetiyor. Backend altyapısı ve veri sistemleri tarafında çalışıyor.</p>
+        <div class="member-links" onclick="event.stopPropagation()">
+          <a href="mailto:frknyilm4z@gmail.com" class="icon-btn" title="E-posta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="member-card member-card-featured reveal" onclick="openModal('m1')">
+        <div class="avatar-wrap">
+          <img src="assets/team/baris-kaya.png" alt="Barış Kaya" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="display:none">BK</div>
+        </div>
+        <div class="member-name">Barış KAYA</div>
+        <div class="member-role">Başkan</div>
+        <p class="member-bio">MPDS'in kurucu başkanı. Kulübün genel vizyonunu, stratejik yönünü ve dış temsilini üstleniyor. Web altyapısı ve arayüz geliştirmeden sorumlu.</p>
+        <div class="member-links" onclick="event.stopPropagation()">
+          <a href="mailto:kayalarbk2004@gmail.com" class="icon-btn" title="E-posta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="member-card reveal" onclick="openModal('m3')">
+        <div class="avatar-wrap">
+          <img src="assets/team/salih-oguz.jpg" alt="Salih Oğuz" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="display:none">SO</div>
+        </div>
+        <div class="member-name">Salih OĞUZ</div>
+        <div class="member-role">Kulüp Sekreteri</div>
+        <p class="member-bio">Kulüp sekreteryasını yürütüyor; etkinlik organizasyonu, üye kayıtları ve hoca-öğrenci iletişim süreçlerinden sorumlu.</p>
+        <div class="member-links" onclick="event.stopPropagation()">
+          <a href="mailto:salihoguz06@gmail.com" class="icon-btn" title="E-posta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══ APPLY ═══ -->
+<section class="section apply-section" id="apply">
+  <div class="apply-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <span class="section-label">// Başvuru</span>
+      <h2 class="section-title">Ekibe Katıl</h2>
+      <p class="section-sub" style="margin:0 auto">Yeteneklerini ve vizyonunu bizimle paylaş. En iyi takım, en cesur bireylerden oluşur.</p>
+    </div>
+
+    <div class="form-card reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ad <span>*</span></label>
+          <input type="text" class="form-input" placeholder="Adınız" id="f-name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Soyad <span>*</span></label>
+          <input type="text" class="form-input" placeholder="Soyadınız" id="f-surname"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">E-posta <span>*</span></label>
+        <input type="email" class="form-input" placeholder="ornek@email.com" id="f-email"/>
+      </div>
+
+      <div class="form-group" id="apply-context-group" style="display:none">
+        <label class="form-label">
+          <svg class="position-info-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="13" height="13">
+            <circle cx="8" cy="8" r="7"/>
+            <line x1="8" y1="7" x2="8" y2="11"/>
+            <circle cx="8" cy="5" r=".5" fill="currentColor" stroke="none"/>
+          </svg>
+          Başvurduğun Pozisyon
+        </label>
+        <div class="position-field-wrap">
+          <input type="text" class="form-input position-input" id="f-position" readonly />
+          <button type="button" class="position-clear-btn" id="position-clear-btn" title="Pozisyon bağlamını kaldır" aria-label="Pozisyon bağlamını kaldır">×</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Yetenekler</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item">
+            <input type="checkbox" value="React / Vue"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">React / Vue</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Node.js"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">Node.js</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Python"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">Python</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="UI/UX Design"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">UI/UX Design</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="DevOps / K8s"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">DevOps / K8s</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Veri Bilimi"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">Veri Bilimi</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Mobile"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">Mobile (iOS/Android)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Blockchain"/>
+            <div class="custom-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div>
+            <span class="checkbox-label">Blockchain</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:.5rem">
+        <label class="form-label">Neden Bize Katılmak İstiyorsun? <span>*</span></label>
+        <textarea class="form-textarea" placeholder="Motivasyonunu, hedeflerini ve bize katabileceğin değeri anlat..." id="f-why"></textarea>
+      </div>
+
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">Başvuruyu Gönder →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2026 <strong>MARMARA MPDS</strong>. Tüm hakları saklıdır. &nbsp;·&nbsp; <a href="mailto:marmarampds@gmail.com">marmarampds@gmail.com</a></p>
+</footer>
+
+<!-- ═══ PROJE EKLE MODAL ═══ -->
+<div class="modal-overlay" id="project-modal-overlay" onclick="closeProjectModal(event)">
+  <div class="modal" id="project-modal-box">
+    <button class="modal-close" onclick="closeProjectModal()" aria-label="Kapat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <span class="section-label" style="display:block;margin-bottom:.4rem">// Proje Havuzu</span>
+    <h3 class="pm-modal-heading">Projeyi Ekle</h3>
+
+    <!-- Adım Göstergesi -->
+    <div class="pm-steps">
+      <div class="pm-step active" id="pm-step-1">
+        <span class="pm-step-num">1</span>
+        <span class="pm-step-label">Temel Bilgiler</span>
+      </div>
+      <div class="pm-step-divider"></div>
+      <div class="pm-step" id="pm-step-2">
+        <span class="pm-step-num">2</span>
+        <span class="pm-step-label">Ekip Rolleri</span>
+      </div>
+    </div>
+
+    <!-- Adım 1 -->
+    <div id="pm-page-1">
+      <div class="form-group">
+        <label class="form-label">Proje Adı <span>*</span></label>
+        <input type="text" class="form-input" id="pm-title" placeholder="Örn: Akıllı Kampüs Uygulaması"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kısa Açıklama <span>*</span></label>
+        <input type="text" class="form-input" id="pm-desc" placeholder="Kart üzerinde görünecek özet (max 160 karakter)" maxlength="160"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Uzun Açıklama <span>*</span></label>
+        <textarea class="form-textarea" id="pm-long-desc" placeholder="Projeyi detaylıca anlat; hedefler, teknolojiler, katkı beklentilerin..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Durum <span>*</span></label>
+        <select class="form-input pm-select" id="pm-status">
+          <option value="ekip-ariyor">Ekip Arıyor</option>
+          <option value="mentor-ariyor">Mentor Arıyor</option>
+          <option value="fikir-asamasi">Fikir Aşaması</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Teknoloji Etiketleri</label>
+        <input type="text" class="form-input" id="pm-tags" placeholder="React, Node.js, Python (virgülle ayır)"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ad <span>*</span></label>
+          <input type="text" class="form-input" id="pm-name" placeholder="Adınız"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Soyad <span>*</span></label>
+          <input type="text" class="form-input" id="pm-surname" placeholder="Soyadınız"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">İletişim E-postası <span>*</span></label>
+        <input type="email" class="form-input" id="pm-email" placeholder="ornek@email.com"/>
+      </div>
+      <div class="pm-footer">
+        <div></div>
+        <button class="submit-btn pm-action-btn" onclick="pmGoStep2()">Devam →</button>
+      </div>
+    </div>
+
+    <!-- Adım 2 -->
+    <div id="pm-page-2" style="display:none">
+      <div class="pm-roles-header">
+        <span class="form-label">Açık Roller</span>
+        <button class="pm-add-role-btn" onclick="pmAddRole()" id="pm-add-role-btn">+ Rol Ekle</button>
+      </div>
+      <div id="pm-roles-list"></div>
+      <p class="pm-roles-hint">Maksimum 5 rol ekleyebilirsiniz. Rol eklemeden de devam edebilirsiniz.</p>
+      <div class="pm-footer">
+        <button class="pm-back-btn" onclick="pmGoStep1()">← Geri</button>
+        <button class="submit-btn pm-action-btn" onclick="submitProject()">Projeyi Ekle →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DUYURU DETAY MODAL ═══ -->
+<div class="modal-overlay" id="ann-modal-overlay" onclick="closeAnnModal(event)">
+  <div class="modal" id="ann-modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAnnModal()" aria-label="Kapat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div id="ann-modal-content"></div>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+<div class="modal-overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModal()" aria-label="Kapat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-msg">Başvurunuz başarıyla gönderildi!</span>
+</div>
+
+<script type="module" src="js/script-firebase.js"></script>
+</body>
+</html>
